@@ -22,7 +22,7 @@ header = ismrmrd.xml.deserialize(dset.readxml);
  
     info.TR         = header.sequenceParameters.TR;     % [msec]
     info.TE         = header.sequenceParameters.TE;     % [msec]
-    info.flip_angle = header.sequenceParameters.flipAngle_deg; % [degrees]
+    %info.flip_angle = header.sequenceParameters.flipAngle_deg; % [degrees]
     
 
     
