@@ -6,7 +6,7 @@
 
 ### Functions
 
-- **snr_recon_3d**: Outputs SNR reconstrution. Root sum of squares and B1 weighted.
+- **snr_recon_3d**: This is the demo file. It takes in 3D imaging data and noise information to reconstruct images in SNR units.
 
 - **estimate_sensitivities.m**: Estimates the coil sensitivities for a 3D volume of kspace data using the Walsh method.
 
