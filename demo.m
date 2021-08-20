@@ -15,30 +15,47 @@ addpath('sunrise_matlab_functions/')
 load('data_speech_coil.mat');
 
 
-% Estimate coils sensitivities from 26 center lines:
+%% Estimate coils sensitivities from 26 center lines:
 [csm,cal_images] = estimate_sensitivities(kdata,26);
+% sanity check: display coil sensitivities 
 
-% Apply decorrelation matrix to data and csm:
+%% Apply decorrelation matrix to data and csm:
 kdata_pw = ismrm_apply_noise_decorrelation_mtx(kdata,dmtx);
 csm_pw   = ismrm_apply_noise_decorrelation_mtx(csm,dmtx);
+% sanity check: display the noise cov matrix before and after decorrelation
 
-% Apply FT. 
+%% Apply FT. 
 image_pw = ismrm_transform_kspace_to_image(kdata_pw,[1 2 3]);
+% sanity check: display the k-space matrix and image space image
 
-% SNR map without coil sensitivities; eq [5] of Kellman Erratum
+%% SNR with RSS combination; eq [5] of Kellman Erratum
 snr_rss = sqrt(2)*sqrt((sum(abs(image_pw).^2,4)));
 
-% SNR with B1 weighting; eq [6] of Kellman Erratum
+%% SNR with optimal B1- weighting; eq [6] of Kellman Erratum
 den = abs( sum(conj(csm_pw) .* image_pw, 4 ) ) ; 
 den = sqrt(2)*den;
 num = sqrt( sum(abs(csm_pw).^2,4) ); 
 snr_b1 = den./num; 
 
-% Plot some images:
+%% Plot Results
 figure;
-sgtitle('SNR')
-subplot(1,3,1), imshow(snr_rss(:,:,18),[]); title('SNR RSS'); colormap(jet); colorbar; 
-subplot(1,3,2), imshow(snr_b1(:,:,18),[]);  title('SNR B1'); colormap(jet); colorbar; 
-subplot(1,3,3), imshow(snr_b1(:,:,18) - snr_rss(:,:,18),[]);  title('Difference');colormap(jet); colorbar; 
+sgtitle('Signal-to-Noise Ratio (SNR)')
+subplot(1,3,1);
+imshow(log10(snr_rss(:,:,18)),[log10(1) log10(100)]); 
+title('log10(SNR) of RSS reconstruction'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,3,2), 
+imshow(log10(snr_b1(:,:,18)),[log10(1) log10(100)]);  
+title('log10(SNR) of optimal B1 reconstruction'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,3,3);
+imshow(log10(snr_b1(:,:,18) - snr_rss(:,:,18)),[-1 0]);  
+title('SNR_b_1 - SNR_r_s_s');
+colormap(jet); 
+colorbar; 
 
 
