@@ -32,6 +32,10 @@ crop_k = k(indices{1},indices{2},indices{3},:);
 
 % Smooth kspace with a 3D hamming window:
 filter = hamming_3d(size(crop_k,1),size(crop_k,2),size(crop_k,3));
+% Divide by root mean square of Hamming filter to keep SD=1
+filter_r = rms(filter(:));
+filter = filter/filter_r;
+
 filter = repmat(filter,[1,1,1,size(crop_k,4)]);
 crop_k   = crop_k .* filter; 
 
