@@ -4,23 +4,15 @@
 % Weighted. 
 
 % The data in this demo is located in: 
-% speech_coil_eval/raw_data/Vol_52/GRE/Speech_Body
-
-
+% speech_coil_eval/data_speech_coil.mat
 
 % Read data and noise files:
+% Loads: dmtx : decorrelation matrix
+%        kdata: kspace data with speech coil, 3D GRE
+%        Noise: Noise measurements from all coils. 
 
+load('data_speech_coil.mat');
 
-% This is the filename of imaging data
-data_filename = 'Speech_GRE.h5'; 
-flag.concatenate = 0;
-[kdata,~] = read_h5_data(data_filename,flag);
-
-% This is the filename of noise data.
-% Ouput decorrelation matrix and noise samples. 
-
-noise_filename = 'pre_scan_noise_speech_data.h5'; 
-[noise,dmtx]= process_noise_ismrmrd_data(noise_filename);
 
 % Estimate coils sensitivities from 26 center lines:
 [csm,cal_images] = estimate_sensitivities(kdata,26);
