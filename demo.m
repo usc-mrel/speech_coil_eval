@@ -1,4 +1,5 @@
 
+addpath('sunrise_matlab_functions/')
 % Script to perform SNR unit reconstruction on 3D imaging and noise data.
 % Takes in imaging data and noise data, and ouputs SNR recon in RSS and B1
 % Weighted. 
