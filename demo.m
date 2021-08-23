@@ -72,7 +72,7 @@ snr_b1 = den./num;
 
 %% Plot Results
 f= figure;
-f.Position = [3440/2 1440/2 900 600];
+f.Position = [500 500 900 600];
 sgtitle('Signal-to-Noise Ratio (SNR)')
 subplot(1,3,1);
 imshow(log10(snr_rss(:,:,18)),[log10(1) log10(100)]); 
