@@ -2,8 +2,13 @@
 addpath('sunrise_matlab_functions'); 
 
 %% Read kspace data,noise and decorrelation matrices for both coils:
-load('tse_data.mat');
-
+cd tse_data/
+filenames = {'dmtx_body.mat','dmtx_head.mat','kdata_body','kdata_head','noise_body','noise_head'};
+for k = 1:numel(filenames)
+    load(filenames{k});
+end
+clear filenames k 
+cd ..
 %% Output snr reconstruction parameters for the body coil:
 [~,~,~,~,psi,psi_pw,image_pw_body,snr_rss_body,snr_b1_body]= snr_2d_tse(kdata_body,noise_body,dmtx_body);
 
