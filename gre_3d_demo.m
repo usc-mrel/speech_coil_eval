@@ -2,6 +2,8 @@
 %  for all the coils. It then outputs the SNR gain over the body coil for
 %  both, the speech and the head coil. 
 
+% Please run this script from the ../speech_coil_eval folder (home folder of the repo).
+
 addpath(genpath('../speech_coil_eval/'));
 
 % Load data for the speech, noise_speech, head, noise_head:
