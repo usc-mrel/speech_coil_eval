@@ -114,14 +114,3 @@ subplot(1,2,2)
 imshow(snr_ratio_head(:,:,18),[0,30]); colormap(jet); colorbar;
 title('SNR Gain Head')
 
-
-
-
-
-
-
-
-
-
-
-
