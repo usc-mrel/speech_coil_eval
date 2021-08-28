@@ -1,9 +1,6 @@
-% This script should do the following:
-% - load speech data and it's noise 
-% - load head   data and it's noise 
-% - do the SNR recon for the speech and body --> ratio
-% - do the SRN recon for the head   and body --> ratio 
-% - all done, basically just put together to output those images. 
+%% This scripts reads in the speech, head, and body coil data, and performs an SNR reconstruction
+%  for all the coils. It then outputs the SNR gain over the body coil for
+%  both, the speech and the head coil. 
 
 addpath(genpath('../speech_coil_eval/'));
 
