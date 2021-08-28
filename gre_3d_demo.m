@@ -5,7 +5,7 @@
 % - do the SRN recon for the head   and body --> ratio 
 % - all done, basically just put together to output those images. 
 
-addpath('../speech_coil_eval/')
+addpath(genpath('../speech_coil_eval/'));
 
 % Load data for the speech, noise_speech, head, noise_head:
 cd ./data/Vol_52/GRE/
