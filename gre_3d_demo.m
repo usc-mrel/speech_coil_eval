@@ -1,6 +1,7 @@
 %% This scripts reads in the speech, head, and body coil data, and performs an SNR reconstruction
 %  for all the coils. It then outputs the SNR gain over the body coil for
-%  both, the speech and the head coil. 
+%  both, the speech and the head coil. It prompts to draw the ROIs and
+%  stores ROI information in data structure 'data'.
 
 % Please run this script from the ../speech_coil_eval folder (home folder of the repo).
 
@@ -113,4 +114,57 @@ title('SNR Gain Speech')
 subplot(1,2,2)
 imshow(snr_ratio_head(:,:,18),[0,30]); colormap(jet); colorbar;
 title('SNR Gain Head')
+
+%% Draw ROIs for one slice (There are 8 rois: upper lip, lower lip, front, mid, back tongue, palate, velum, pharyngeal wall);
+% Please draw ROIs in the order above.
+% Initialize data structure:
+data = struct();
+% Speech coil:
+for i = 1:8 % This is for 8 ROIs
+f = figure;
+f.Position = [500  115  689  516];
+% Display image for ROI drawing:
+imshow(snr_b1_sp(:,:,18),[]);
+title('Speech coil: Please select ROI, double click when done.')
+roi = drawfreehand('StripeColor','y');
+customWait(roi);
+% Create mask:
+data.mask.sp{i} = createMask(roi); 
+% Apply mask to the SNR ratio image:
+data.masked.sp{i} = data.mask.sp{i}.*squeeze(snr_ratio_speech(:,:,16));
+% Obtain mean and variance:
+data.mean_array.sp{i} = mean(nonzeros(data.masked.sp{i}));
+data.var_array.sp{i}  = var(nonzeros(data.masked.sp{i}),[],'all');
+end
+
+% Head coil
+for i = 1:8
+f = figure;
+f.Position = [500  115  689  516];
+% Display image for ROI drawing:
+imshow(snr_b1_hd(:,:,17),[]);
+title('Head coil: Please select ROI, double click when done.')
+roi = drawfreehand('StripeColor','y');
+customWait(roi);
+% Create mask:
+data.mask.hd{i} = createMask(roi);
+% Apply mask to the SNR ratio image:
+data.masked.hd{i} = data.mask.hd{i}.*squeeze(snr_ratio_head(:,:,16));
+% Obtain mean and variance:
+data.mean_array.hd{i} = mean(nonzeros(data.masked.hd{i}));
+data.var_array.hd{i}  = var(nonzeros(data.masked.hd{i}),[],'all');
+end
+
+%% Create table to store data:
+% These are the names and order of the ROI regions:
+roi_list = {'Upper lip';'Lower lip';'Front tongue';'Mid tongue';'Back tongue';'Palate';'Velum';'Pharyngeal Wall'};
+% Create table:
+table_speech = table(roi_list(:),data.mean_array.sp(:));
+table_head   = table(roi_list(:),data.mean_array.hd(:));
+
+
+
+
+
+
 
