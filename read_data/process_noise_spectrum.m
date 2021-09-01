@@ -20,7 +20,7 @@ flag.removeOS =0;
 % reshape noise to [Ns*Nav Nm Nc]:
 noise = reshape(noise, [size(noise,1)*size(noise,2),size(noise,3),size(noise,4)]);
 % "rescale noise":
-noise = sqrt(20)*noise;
+% noise = sqrt(20)*noise;
                            
 % reshape noise to [Nc Ns*Nav Nm];                                
 noise = permute(noise,[3,1,2]);
