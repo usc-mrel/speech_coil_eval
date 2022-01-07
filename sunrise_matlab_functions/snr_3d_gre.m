@@ -25,4 +25,13 @@ den = sqrt(2)*den;
 num = sqrt( sum(abs(csm_pw).^2,4) ); 
 snr_b1 = den./num; 
 
+%% Remove Oversampling: (01/07)
+%csm_pw = csm_pw((1:size(csm_pw,1)/2)+ size(csm_pw,1)/4, :,:,:);
+image_pw = image_pw((1:size(image_pw,1)/2)+ size(image_pw,1)/4, :,:,:);
+snr_b1 = snr_b1((1:size(snr_b1,1)/2)+ size(snr_b1,1)/4, :,:);
+
+
+%% This section smooths the snr images. This is for more consistent images upon display of ratios(01/06):
+snr_b1 = imgaussfilt(snr_b1,1);
+
 end

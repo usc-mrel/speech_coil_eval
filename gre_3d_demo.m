@@ -7,8 +7,9 @@
 
 addpath(genpath('../speech_coil_eval/'));
 
-% Load data for the speech, noise_speech, head, noise_head:
-cd ./data/Vol_52/GRE/
+% Load data for the speech, noise_speech, head, noise_head: (change vol_x
+% to whichever volunteer is desired. Defaut is 4.)
+cd ./all_data/vol_4/
 %% load speech, body, and noise:
 data_filename = 'speech.h5'; 
 flag.concatenate = 0;
