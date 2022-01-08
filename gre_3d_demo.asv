@@ -27,6 +27,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_body_sp,~] = read_h5_data(data_filename,flag);
+kdata_body_sp = flip(kdata_body_sp,2);
 
 data_filename = 'noise_body_sp.h5'; 
 [noise_body_sp,dmtx_body_sp] = process_noise_spectrum(data_filename);
@@ -37,6 +38,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_hd,~] = read_h5_data(data_filename,flag);
+kdata_hd = flip(kdata_hd,2);
 
 data_filename = 'noise_head.h5'; 
 [noise_hd,dmtx_hd] = process_noise_spectrum(data_filename);
@@ -47,6 +49,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_body_hd,~] = read_h5_data(data_filename,flag);
+kdata_body_hd = flip(kdata_body_hd,2);
 
 data_filename = 'noise_body_hd.h5'; 
 [noise_body_hd,dmtx_body_hd] = process_noise_spectrum(data_filename);
@@ -103,6 +106,34 @@ title('log10(SNR) of B1 reconstruction for body coil (head in)');
 colormap(jet); 
 colorbar; 
 
+%% Display SNR images;
+f = figure; 
+f.Position = [500 500 1500 500];
+
+subplot(1,4,1)
+imshow(snr_b1_sp(:,:,18),[0 50]); 
+title('SNR of B1 reconstruction for speech coil'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,4,2)
+imshow(snr_b1_body_sp(:,:,18),[0 10]); 
+title('SNR B1 reconstruction for body coil (speech in)'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,4,3)
+imshow(snr_b1_hd(:,:,18),[0 30]); 
+title('SNR of B1 reconstruction for head coil'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,4,4)
+imshow(snr_b1_body_hd(:,:,18),[0 10]); 
+title('SNR of B1 reconstruction for body coil (head in)'); 
+colormap(jet); 
+colorbar; 
+
 %% Calculate and display SNR ratios:
 snr_ratio_speech = snr_b1_sp./snr_b1_body_sp;
 snr_ratio_head  =  snr_b1_hd./snr_b1_body_hd;
@@ -127,8 +158,25 @@ f = figure;
 f.Position = [500  115  689  516];
 % Display image for ROI drawing:
 imshow(snr_b1_sp(:,:,18),[]);
+hold on
+
+if i>1
+    for j=1:i-1
+        roi = roi_pos(j);
+        x_roi = roi(:,1);
+        y_roi_= roi(:,2);
+        plot(x_roi,y_roi_,'g','-')
+    end
+end
+        
+
+
+
 title('Speech coil: Please select ROI, double click when done.')
 roi = drawfreehand('StripeColor','y');
+
+roi_pos(i) = roi.Position;
+
 customWait(roi);
 % Create mask:
 data.mask.sp{i} = createMask(roi); 

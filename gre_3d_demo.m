@@ -78,40 +78,13 @@ figure; ax3 = axes; imshow(body_sp_image,[]); title(ax3,'Body Coil Images with S
 figure; ax4 = axes; imshow(body_hd_image,[]); title(ax4,'Body Coil Images with head coil in');
 clear ax*
 
-%% Display SNR images;
-f = figure; 
-f.Position = [500 500 1500 500];
-
-subplot(1,4,1)
-imshow(log10(snr_b1_sp(:,:,18)),[log10(1) log10(100)]); 
-title('log10(SNR) of B1 reconstruction for speech coil'); 
-colormap(jet); 
-colorbar; 
-
-subplot(1,4,2)
-imshow(log10(snr_b1_body_sp(:,:,18)),[log10(1) log10(100)]); 
-title('log10(SNR) of B1 reconstruction for body coil (speech in)'); 
-colormap(jet); 
-colorbar; 
-
-subplot(1,4,3)
-imshow(log10(snr_b1_hd(:,:,18)),[log10(1) log10(100)]); 
-title('log10(SNR) of B1 reconstruction for head coil'); 
-colormap(jet); 
-colorbar; 
-
-subplot(1,4,4)
-imshow(log10(snr_b1_body_hd(:,:,18)),[log10(1) log10(100)]); 
-title('log10(SNR) of B1 reconstruction for body coil (head in)'); 
-colormap(jet); 
-colorbar; 
 
 %% Display SNR images;
 f = figure; 
 f.Position = [500 500 1500 500];
 
 subplot(1,4,1)
-imshow(snr_b1_sp(:,:,18),[0 50]); 
+imshow(snr_b1_sp(:,:,18),[0 30]); 
 title('SNR of B1 reconstruction for speech coil'); 
 colormap(jet); 
 colorbar; 
@@ -147,53 +120,6 @@ title('SNR Gain Speech')
 subplot(1,2,2)
 imshow(snr_ratio_head(:,:,18),[0,30]); colormap(jet); colorbar;
 title('SNR Gain Head')
-
-%% Draw ROIs for one slice (There are 8 rois: upper lip, lower lip, front, mid, back tongue, palate, velum, pharyngeal wall);
-% Please draw ROIs in the order above.
-% Initialize data structure:
-data = struct();
-% Speech coil:
-for i = 1:8 % This is for 8 ROIs
-f = figure;
-f.Position = [500  115  689  516];
-% Display image for ROI drawing:
-imshow(snr_b1_sp(:,:,18),[]);
-title('Speech coil: Please select ROI, double click when done.')
-roi = drawfreehand('StripeColor','y');
-customWait(roi);
-% Create mask:
-data.mask.sp{i} = createMask(roi); 
-% Apply mask to the SNR ratio image:
-data.masked.sp{i} = data.mask.sp{i}.*squeeze(snr_ratio_speech(:,:,16));
-% Obtain mean and variance:
-data.mean_array.sp{i} = mean(nonzeros(data.masked.sp{i}));
-data.var_array.sp{i}  = var(nonzeros(data.masked.sp{i}),[],'all');
-end
-
-% Head coil
-for i = 1:8
-f = figure;
-f.Position = [500  115  689  516];
-% Display image for ROI drawing:
-imshow(snr_b1_hd(:,:,17),[]);
-title('Head coil: Please select ROI, double click when done.')
-roi = drawfreehand('StripeColor','y');
-customWait(roi);
-% Create mask:
-data.mask.hd{i} = createMask(roi);
-% Apply mask to the SNR ratio image:
-data.masked.hd{i} = data.mask.hd{i}.*squeeze(snr_ratio_head(:,:,16));
-% Obtain mean and variance:
-data.mean_array.hd{i} = mean(nonzeros(data.masked.hd{i}));
-data.var_array.hd{i}  = var(nonzeros(data.masked.hd{i}),[],'all');
-end
-
-%% Create table to store data:
-% These are the names and order of the ROI regions:
-roi_list = {'Upper lip';'Lower lip';'Front tongue';'Mid tongue';'Back tongue';'Palate';'Velum';'Pharyngeal Wall'};
-% Create table:
-table_speech = table(roi_list(:),data.mean_array.sp(:));
-table_head   = table(roi_list(:),data.mean_array.hd(:));
 
 
 
