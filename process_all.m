@@ -6,7 +6,7 @@
 % add speech_coil_eval to the path:
 addpath(genpath('../speech_coil_eval/'));
 
-% change dir to data and read filenames:
+% change directory to data and read filenames:
 cd ./all_data/
 d = dir;
 % initizize data contatiner to store ratios:
@@ -16,17 +16,14 @@ ratio = struct;
 for i = 1:size(d,1)
     
 if startsWith(d(i).name,'vol')
-     
      folder_name = d(i).name;
      cd(folder_name)
-     
      fprintf('Currently reading %s',folder_name)
     
     % put ratios in data container:
     [ ratio(i).sp, ratio(i).hd ] = ratio_output;
     % return to data folder:
     cd ..
-    
 end
 
 end
@@ -36,7 +33,7 @@ while isempty(ratio(1).sp)
     ratio(1) = [];
 end
     
-clearvars folder_name i 
+clearvars folder_name i d
 
 %% Plot all ratios:
 
@@ -65,12 +62,10 @@ end
 
 
 % set colormap:
-
 set(h, 'Colormap', jet, 'CLim', [0 40])
 
 cbh = colorbar(h(end)); 
-% To position the colorbar as a global colorbar representing
-% all tiles, 
+
 cbh.Layout.Tile = 'east'; 
 
 % Create textbox for title "UA" 
