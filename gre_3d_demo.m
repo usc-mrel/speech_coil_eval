@@ -106,8 +106,33 @@ title('log10(SNR) of B1 reconstruction for body coil (head in)');
 colormap(jet); 
 colorbar; 
 
-%%
+%% Display SNR images;
+f = figure; 
+f.Position = [500 500 1500 500];
 
+subplot(1,4,1)
+imshow(snr_b1_sp(:,:,18),[0 50]); 
+title('SNR of B1 reconstruction for speech coil'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,4,2)
+imshow(snr_b1_body_sp(:,:,18),[0 10]); 
+title('SNR B1 reconstruction for body coil (speech in)'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,4,3)
+imshow(snr_b1_hd(:,:,18),[0 30]); 
+title('SNR of B1 reconstruction for head coil'); 
+colormap(jet); 
+colorbar; 
+
+subplot(1,4,4)
+imshow(snr_b1_body_hd(:,:,18),[0 10]); 
+title('SNR of B1 reconstruction for body coil (head in)'); 
+colormap(jet); 
+colorbar; 
 
 %% Calculate and display SNR ratios:
 snr_ratio_speech = snr_b1_sp./snr_b1_body_sp;
