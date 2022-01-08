@@ -16,6 +16,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_sp,~] = read_h5_data(data_filename,flag);
+kdata_sp = flip(kdata_sp,2);
 
 data_filename = 'noise_speech.h5'; 
 [noise_sp,dmtx_sp] = process_noise_spectrum(data_filename);

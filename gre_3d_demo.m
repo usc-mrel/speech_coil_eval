@@ -16,6 +16,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_sp,~] = read_h5_data(data_filename,flag);
+kdata_sp = flip(kdata_sp,2);
 
 data_filename = 'noise_speech.h5'; 
 [noise_sp,dmtx_sp] = process_noise_spectrum(data_filename);
@@ -26,6 +27,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_body_sp,~] = read_h5_data(data_filename,flag);
+kdata_body_sp = flip(kdata_body_sp,2);
 
 data_filename = 'noise_body_sp.h5'; 
 [noise_body_sp,dmtx_body_sp] = process_noise_spectrum(data_filename);
@@ -36,6 +38,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_hd,~] = read_h5_data(data_filename,flag);
+kdata_hd = flip(kdata_hd,2);
 
 data_filename = 'noise_head.h5'; 
 [noise_hd,dmtx_hd] = process_noise_spectrum(data_filename);
@@ -46,6 +49,7 @@ flag.concatenate = 0;
 flag.remove_noise = 1; 
 flag.removeOS = 0;
 [kdata_body_hd,~] = read_h5_data(data_filename,flag);
+kdata_body_hd = flip(kdata_body_hd,2);
 
 data_filename = 'noise_body_hd.h5'; 
 [noise_body_hd,dmtx_body_hd] = process_noise_spectrum(data_filename);
@@ -101,6 +105,9 @@ imshow(log10(snr_b1_body_hd(:,:,18)),[log10(1) log10(100)]);
 title('log10(SNR) of B1 reconstruction for body coil (head in)'); 
 colormap(jet); 
 colorbar; 
+
+%%
+
 
 %% Calculate and display SNR ratios:
 snr_ratio_speech = snr_b1_sp./snr_b1_body_sp;
