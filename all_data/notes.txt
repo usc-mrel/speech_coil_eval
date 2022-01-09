@@ -1,6 +1,0 @@
-These contains some notes:
-
-vol_1 = 52
-vol_2 = x
-vol_3 = 80
-vol_4 = 2x
