@@ -7,7 +7,7 @@
 addpath(genpath('../speech_coil_eval/'));
 
 % change directory to data and read filenames:
-cd ./all_data/
+cd ./data/
 d = dir;
 % initizize data contatiner to store ratios:
 ratio = struct;
@@ -38,16 +38,16 @@ clearvars folder_name i d
 %% Plot all ratios:
 
 figure1 = figure;
-figure1.Position = [1745 370 1192 649];
+figure1.Position = [1185 347 992 690];
 
-tlo = tiledlayout(2,4,'TileSpacing','none');
+tlo = tiledlayout(2,3,'TileSpacing','none');
 t = title(tlo,'SNR GAIN');
 t.FontSize = 28;
 t.FontWeight = 'bold';
-list = ["1","2","3","4"];
+list = ["1","2","3"];%,"4"];
 
 % plot speech ratios:
-for i = 1:4
+for i = 1:3
 h(i) = nexttile(tlo); %vol 2x
 imshow(ratio(i).sp(:,:,18),[])
 t=title(list(i));
@@ -55,8 +55,8 @@ t.FontSize = 24;
 end
 
 % plot head ratios:
-for i=1:4
-h(i+4) = nexttile(tlo);
+for i=1:3
+h(i+3) = nexttile(tlo);
 imshow(ratio(i).hd(:,:,18),[])
 end
 
