@@ -4,7 +4,7 @@
 % Please run this script from speech_coil_eval
 
 % add speech_coil_eval to the path:
-addpath(genpath('../speech_coil_eval/'));
+addpath(genpath(cd));
 
 % change directory to data and read filenames:
 cd ./data/
