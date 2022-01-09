@@ -5,11 +5,11 @@
 
 % Please run this script from the ../speech_coil_eval folder (home folder of the repo).
 
-addpath(genpath('../speech_coil_eval/'));
+addpath(genpath(cd));
 
 % Load data for the speech, noise_speech, head, noise_head: (change vol_x
 % to whichever volunteer is desired. Defaut is 4.)
-cd ./all_data/vol_4/
+cd ./data/vol4
 %% load speech, body, and noise:
 data_filename = 'gre_speech.h5'; 
 flag.concatenate = 0;
