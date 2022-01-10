@@ -1,4 +1,4 @@
-% This script will process the data from all 4 subjects and outputs the
+% This script will process the data from 3 subjects and outputs the
 % gain (snr_coil/snr_body) for the speech and head coil, for all subjects.
 
 % Please run this script from speech_coil_eval
@@ -20,7 +20,7 @@ if startsWith(d(i).name,'vol')
      cd(folder_name)
      fprintf('Currently reading %s',folder_name)
     
-    % put ratios in data container:
+    % put snr gain ratios in data container:
     [ ratio(i).sp, ratio(i).hd ] = ratio_output;
     % return to data folder:
     cd ..

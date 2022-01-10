@@ -1,7 +1,6 @@
 %% This scripts reads in the speech, head, and body coil data, and performs an SNR reconstruction
 %  for all the coils. It then outputs the SNR gain over the body coil for
-%  both, the speech and the head coil. It prompts to draw the ROIs and
-%  stores ROI information in data structure 'data'.
+%  both, the speech and the head coil.
 
 % Please run this script from the ../speech_coil_eval folder (home folder of the repo).
 
@@ -120,9 +119,6 @@ title('SNR Gain Speech')
 subplot(1,2,2)
 imshow(snr_ratio_head(:,:,18),[0,30]); colormap(jet); colorbar;
 title('SNR Gain Head')
-
-
-
 
 
 
