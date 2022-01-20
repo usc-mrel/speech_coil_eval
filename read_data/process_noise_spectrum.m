@@ -43,7 +43,7 @@ flat_mag_noise = mean(p(910:3115,:),1); % flat portion of spectrum
 all_mag_noise = mean(p,1);
 noise_ratio = mean(all_mag_noise./flat_mag_noise);
 % 3 digit precision 
-sprintf('The equivalent noise bandwidth is %.3f ', noise_ratio)
+sprintf('The equivalent noise bandwidth is %.3f ', noise_ratio);
 
 % Scale covariance matrix by this ratio:
 
