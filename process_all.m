@@ -18,7 +18,7 @@ for i = 1:size(d,1)
 if startsWith(d(i).name,'vol')
      folder_name = d(i).name;
      cd(folder_name)
-     fprintf('Currently reading %s',folder_name)
+     fprintf('Currently reading %s \n',folder_name)
     
     % put snr gain ratios in data container:
     [ ratio(i).sp, ratio(i).hd ] = ratio_output;
