@@ -66,21 +66,38 @@ data_filename = 'noise_body_hd.h5';
 [~,~,~,~,image_pw_body_hd,~,snr_b1_body_hd]= snr_3d_gre(kdata_body_hd,dmtx_body_hd);
 
 %% Plot some pre-whitened images from all coils:
-speech_image  = reshape(squeeze(abs(image_pw_sp(:,:,18,:))),[size(image_pw_sp,1), size(image_pw_sp,2)*size(image_pw_sp,4)]);
-head_image    = reshape(squeeze(abs(image_pw_hd(:,:,18,:))),[size(image_pw_hd,1), size(image_pw_hd,2)*size(image_pw_hd,4)]);
-body_sp_image = reshape(squeeze(abs(image_pw_body_sp(:,:,18,:))),[size(image_pw_body_sp,1), size(image_pw_body_sp,2)*size(image_pw_body_sp,4)]);
-body_hd_image = reshape(squeeze(abs(image_pw_body_hd(:,:,18,:))),[size(image_pw_body_hd,1), size(image_pw_body_hd,2)*size(image_pw_body_hd,4)]);
 
-figure; ax1 = axes; imshow(speech_image,[]);  title(ax1,'Speech Coil Images');
-figure; ax2 = axes; imshow(head_image,[]);    title(ax2,'Head Coil Images');
-figure; ax3 = axes; imshow(body_sp_image,[]); title(ax3,'Body Coil Images with Speech Coil In');
-figure; ax4 = axes; imshow(body_hd_image,[]); title(ax4,'Body Coil Images with head coil in');
-clear ax*
+% Speech and head coil images:
+fig = figure;
+fig.Position = [1713 488 1286 630];
+tile = tiledlayout(1,2);
+tile.TileSpacing = 'none';
+
+nexttile
+montage(abs(image_pw_sp(:,:,18,:)),'DisplayRange',[],'Size',[4 2],'ThumbnailSize',[2*size(image_pw_sp,1),2*size(image_pw_sp,2)])
+title('Speech Coil Images');
+nexttile
+montage(abs(image_pw_hd(:,:,18,:)),'DisplayRange',[],'Size',[4 4],'ThumbnailSize',[2*size(image_pw_hd,1),2*size(image_pw_hd,2)])
+title('Head Coil Images');
+
+% Body coil images:
+fig = figure;
+fig.Position = [1328 858 682  191];
+tile = tiledlayout(1,2);
+
+nexttile
+montage(abs(image_pw_body_sp(:,:,18,:)),'DisplayRange',[],'Size',[1 2],'ThumbnailSize',[2*size(image_pw_sp,1),2*size(image_pw_sp,2)])
+title('Body Coil Images With Speech Coil In');
+nexttile
+montage(abs(image_pw_body_hd(:,:,18,:)),'DisplayRange',[],'Size',[1 2],'ThumbnailSize',[2*size(image_pw_hd,1),2*size(image_pw_hd,2)])
+title('Body Coil Images With Head Coil In');
 
 
 %% Display SNR images;
 f = figure; 
 f.Position = [500 500 1500 500];
+sgtitle('SNR Images','FontSize',15,'FontWeight','bold');
+
 
 subplot(1,4,1)
 imshow(snr_b1_sp(:,:,18),[0 30]); 
@@ -106,19 +123,23 @@ title('SNR of B1 reconstruction for body coil (head in)');
 colormap(jet); 
 colorbar; 
 
+
 %% Calculate and display SNR ratios:
 snr_ratio_speech = snr_b1_sp./snr_b1_body_sp;
 snr_ratio_head  =  snr_b1_hd./snr_b1_body_hd;
 
-f = figure;
+
+f = figure; 
+f.Position = [500 500 1500 500];
+s =sgtitle('SNR Ratios (rSNR)','FontSize',15,'FontWeight','bold');
 
 subplot(1,2,1)
 imshow(snr_ratio_speech(:,:,18),[0,30]); colormap(jet); colorbar;
-title('SNR Gain Speech')
+title('\textbf{SNR Gain Speech $\mathrm{rSNR_{UA}}$}','Interpreter','latex')
 
 subplot(1,2,2)
 imshow(snr_ratio_head(:,:,18),[0,30]); colormap(jet); colorbar;
-title('SNR Gain Head')
+title('\textbf{SNR Gain Head $\mathrm{rSNR_{HD}}$}','Interpreter','latex')
 
 cd ../..
 

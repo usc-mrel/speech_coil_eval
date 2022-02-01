@@ -14,18 +14,35 @@ addpath(genpath(cd));
 
 load('data_speech_coil.mat');
 
-
 %% Estimate coils sensitivities from 26 center lines:
 [csm,cal_images] = estimate_sensitivities(kdata,26);
-% sanity check: display coil sensitivities 
+% mask csm to remove low signal areas:
+mask = double(mask);
+mask(mask==0)=nan; 
+csm = csm .* mask;
+
+%% sanity check: display coil sensitivities 
+f = figure;
+f.Position = [1629  486  1143  641];
+tile = tiledlayout(2,1);
+tile.TileSpacing = 'none';
+
+
+
 % Display magnitude:
-figure;  ax1 = axes;
+h(1) = nexttile;
 montage(squeeze(abs(csm(:,:,18,:))),'Size', [1,8],'ThumbnailSize',[size(csm,1),size(csm,2)],'DisplayRange',[]);
-title(ax1,'Magnitude of Coil Sensitivities');
+title('Magnitude of Coil Sensitivities (Mid-Sagittal Slice)');
+
 % Display Phase:
-figure; ax2 = axes;
+h(2)=nexttile;
 montage(squeeze(angle(csm(:,:,18,:))),'Size', [1,8],'ThumbnailSize',[size(csm,1),size(csm,2)],'DisplayRange',[]);
-title(ax2,'Phase of Coil Sensitivities');
+title('Phase of Coil Sensitivities (Relative to first coil)');
+
+colormap(h(2),jet)
+colorbar(h(2))
+
+
 
 
 %% Apply decorrelation matrix to data and csm:
@@ -37,22 +54,39 @@ csm_pw   = ismrm_apply_noise_decorrelation_mtx(csm,dmtx);
 [psi,psi_pw] = calculate_cov(noise,dmtx);
 
 % Display the covariance matrices before and after pre-whitening:
-figure; ax3 = axes;
-imagesc(abs(psi)); axis equal; axis off; colormap(jet); colorbar
-title(ax3,'Covariance Matrix Before Pre-Whitening');
+f = figure;
+f.Position = [1440 971 794 366];
+tile = tiledlayout(1,2);
 
-figure; ax4 = axes;
-imagesc(abs(psi_pw)); axis equal; axis off; colormap(jet); colorbar
-title(ax4,'Covariance Matrix After Pre-Whitening');
+h(1) = nexttile;
+imagesc(abs(psi)); axis off; colormap(jet); colorbar
+title('Covariance Matrix Before Pre-Whitening');
+
+h(2) = nexttile;
+imagesc(abs(psi_pw));  axis off; colormap(jet); colorbar
+title('Covariance Matrix After Pre-Whitening');
 
 %% Apply FT. 
 image_pw = ismrm_transform_kspace_to_image(kdata_pw,[1 2 3]);
-% sanity check: display the k-space matrix and image space image
-% Display k-space data:
-figure; ax5 = axes;
-montage(squeeze(abs(kdata_pw(:,:,18,:))),'Size',[1,size(kdata,4)],'ThumbnailSize',[size(kdata,1),...
-size(kdata,2)],'DisplayRange',[])
-title(ax5,'K-space data')
+%% Display k-space data:
+
+f = figure;
+f.Position = [1629  486  1143  641];
+tile = tiledlayout(2,1);
+tile.TileSpacing = 'none';
+
+h(1) = nexttile;
+montage(squeeze(abs(kdata_pw(:,:,18,:))),'Size', [1,8],'ThumbnailSize',[size(kdata,1),size(kdata,2)],'DisplayRange',[]);
+title('Magnitude of K-space data');
+
+% Display Phase:
+h(2)=nexttile;
+montage(squeeze(angle(kdata_pw(:,:,18,:))),'Size', [1,8],'ThumbnailSize',[size(kdata,1),size(kdata,2)],'DisplayRange',[]);
+title('Phase of K-space data');
+
+colormap(h(2),jet)
+colorbar(h(2))
+%% Display images:
 
 % Display images:
 figure; ax1 = axes;
